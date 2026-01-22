@@ -66,16 +66,172 @@
     <nav class="main-nav">
         <div class="container">
             <div class="nav-links">
-                <a href="#" class="nav-link">Shop</a>
-                <a href="#" class="nav-link">Reviews</a>
-                <a href="#" class="nav-link">Track Your Order</a>
-                <a href="#" class="nav-link">Follow</a>
-                <a href="#" class="nav-link">Refund Policy</a>
-                <a href="#" class="nav-link">Shipping Policy</a>
-                <a href="#" class="nav-link">Size Chart</a>
+                <a href="#" class="nav-button">Shop</a>
+                <a href="#" class="nav-button">Reviews</a>
+                <a href="#" class="nav-button">Track Your Order</a>
+                <a href="#" class="nav-button">Follow</a>
+                <a href="#" class="nav-button">Refund Policy</a>
+                <a href="#" class="nav-button">Shipping Policy</a>
+                <a href="#" class="nav-button">Size Chart</a>
             </div>
         </div>
     </nav>
+
+    <!-- Shopify Products Section - Themed buy button embed -->
+    <section class="product-section shopify-section">
+        <div class="container">
+            <h2 class="section-title">Our Store</h2>
+            <div id="product-component-1769097705122"></div>
+            <script type="text/javascript">
+            /*<![CDATA[*/
+            (function () {
+              var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+              if (window.ShopifyBuy) {
+                if (window.ShopifyBuy.UI) {
+                  ShopifyBuyInit();
+                } else {
+                  loadScript();
+                }
+              } else {
+                loadScript();
+              }
+              function loadScript() {
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = scriptURL;
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+                script.onload = ShopifyBuyInit;
+              }
+              function ShopifyBuyInit() {
+                var client = ShopifyBuy.buildClient({
+                  domain: 'jsigku-13.myshopify.com',
+                  storefrontAccessToken: '9c1c187a862233d1048a7b0d5e4cc61e',
+                });
+                ShopifyBuy.UI.onReady(client).then(function (ui) {
+                  ui.createComponent('product', {
+                    id: '15393010024817',
+                    variantId: '62927430943089',
+                    node: document.getElementById('product-component-1769097705122'),
+                    moneyFormat: '%24%7B%7Bamount%7D%7D',
+                    options: {
+                      "product": {
+                        "styles": {
+                          "product": {
+                            "@media (min-width: 601px)": {
+                              "max-width": "100%",
+                              "margin-left": "0",
+                              "margin-bottom": "50px"
+                            },
+                            "text-align": "left"
+                          },
+                          "title": { "font-size": "26px" },
+                          "button": {
+                            "font-family": "Quantico, sans-serif",
+                            "font-weight": "bold",
+                            "background-color": "#9333ea",
+                            ":hover": { "background-color": "#7e22ce" },
+                            ":focus": { "background-color": "#7e22ce" }
+                          },
+                          "price": { "font-size": "18px" },
+                          "compareAt": { "font-size": "15.3px" },
+                          "unitPrice": { "font-size": "15.3px" }
+                        },
+                        "buttonDestination": "checkout",
+                        "layout": "horizontal",
+                        "contents": {
+                          "img": false,
+                          "imgWithCarousel": true,
+                          "options": false,
+                          "description": true
+                        },
+                        "width": "100%",
+                        "text": { "button": "Buy now" },
+                        "googleFonts": ["Quantico"]
+                      },
+                      "modalProduct": {
+                        "contents": {
+                          "img": false,
+                          "imgWithCarousel": true,
+                          "button": false,
+                          "buttonWithQuantity": true
+                        },
+                        "styles": {
+                          "product": {
+                            "@media (min-width: 601px)": {
+                              "max-width": "100%",
+                              "margin-left": "0px",
+                              "margin-bottom": "0px"
+                            }
+                          },
+                          "button": {
+                            "font-family": "Quantico, sans-serif",
+                            "font-weight": "bold",
+                            "background-color": "#9333ea",
+                            ":hover": { "background-color": "#7e22ce" },
+                            ":focus": { "background-color": "#7e22ce" }
+                          },
+                          "title": {
+                            "font-family": "Quantico, sans-serif",
+                            "font-weight": "bold",
+                            "font-size": "26px",
+                            "color": "#1a1a1a"
+                          },
+                          "price": {
+                            "font-family": "Quantico, sans-serif",
+                            "font-weight": "normal",
+                            "font-size": "18px",
+                            "color": "#1a1a1a"
+                          },
+                          "compareAt": {
+                            "font-family": "Quantico, sans-serif",
+                            "font-weight": "normal",
+                            "font-size": "15.3px",
+                            "color": "#1a1a1a"
+                          },
+                          "unitPrice": {
+                            "font-family": "Quantico, sans-serif",
+                            "font-weight": "normal",
+                            "font-size": "15.3px",
+                            "color": "#1a1a1a"
+                          }
+                        },
+                        "googleFonts": ["Quantico"],
+                        "text": { "button": "Add to cart" }
+                      },
+                      "cart": {
+                        "styles": {
+                          "button": {
+                            "font-family": "Quantico, sans-serif",
+                            "font-weight": "bold",
+                            "background-color": "#9333ea",
+                            ":hover": { "background-color": "#7e22ce" },
+                            ":focus": { "background-color": "#7e22ce" }
+                          }
+                        },
+                        "text": { "total": "Subtotal", "button": "Checkout" },
+                        "googleFonts": ["Quantico"]
+                      },
+                      "toggle": {
+                        "styles": {
+                          "toggle": {
+                            "font-family": "Quantico, sans-serif",
+                            "font-weight": "bold",
+                            "background-color": "#9333ea",
+                            ":hover": { "background-color": "#7e22ce" },
+                            ":focus": { "background-color": "#7e22ce" }
+                          }
+                        },
+                        "googleFonts": ["Quantico"]
+                      }
+                    },
+                  });
+                });
+              }
+            })();
+            /*]]>*/
+            </script>
+        </div>
+    </section>
 
     <!-- Amazon Affiliate Products Section -->
     <section class="product-section amazon-section">
@@ -83,16 +239,6 @@
             <h2 class="section-title">Featured Products</h2>
             <div class="product-grid" id="amazon-products-grid">
                 <!-- Amazon affiliate products will be dynamically loaded here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Shopify Products Section -->
-    <section class="product-section shopify-section">
-        <div class="container">
-            <h2 class="section-title">Our Store</h2>
-            <div class="product-grid" id="shopify-products-grid">
-                <!-- Shopify products will be dynamically loaded here -->
             </div>
         </div>
     </section>
@@ -178,7 +324,16 @@
     </div>
 
     <!-- Shopify Buy Button SDK -->
+    <script>
+        // Clear localStorage BEFORE SDK loads to prevent it from using cached credentials
+        try {
+            localStorage.removeItem('shopify_store');
+            localStorage.removeItem('shopify_api_key');
+            localStorage.removeItem('shopify_enabled');
+            console.log('🧹 Cleared localStorage before SDK load');
+        } catch(e) {}
+    </script>
     <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>

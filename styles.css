@@ -7,8 +7,8 @@
 
 body {
   font-family: 'Quantico', sans-serif;
-  background: #0c0c0d;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -21,8 +21,8 @@ body {
 
 /* Promo Banner */
 .promo-banner {
-  background: #0c0c0d;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 12px 0;
 }
 
@@ -35,7 +35,7 @@ body {
 }
 
 .promo-text {
-  color: white;
+  color: #000000;
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.05em;
@@ -73,9 +73,9 @@ body {
 
 /* Header Styles */
 .header {
-  background: #0c0c0d;
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  color: #000000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -92,7 +92,7 @@ body {
 .mobile-menu-btn {
   background: none;
   border: none;
-  color: white;
+  color: #000000;
   font-size: 24px;
   cursor: pointer;
   padding: 8px;
@@ -115,7 +115,7 @@ body {
 .logo-circle {
   width: 48px;
   height: 48px;
-  border: 2px solid white;
+  border: 2px solid #000000;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -152,7 +152,7 @@ body {
 .nav-icon {
   background: none;
   border: none;
-  color: white;
+  color: #000000;
   font-size: 20px;
   cursor: pointer;
   padding: 8px;
@@ -175,7 +175,7 @@ body {
 .search-btn {
   background: none;
   border: none;
-  color: white;
+  color: #000000;
   font-size: 20px;
   cursor: pointer;
   padding: 8px;
@@ -188,8 +188,8 @@ body {
 
 /* Main Navigation */
 .main-nav {
-  background: #0c0c0d;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   overflow-x: auto;
 }
 
@@ -208,24 +208,96 @@ body {
   }
 }
 
-.nav-link {
-  color: white;
-  text-decoration: none;
-  font-weight: 700;
+/* Liquid Glass Navigation Buttons */
+.nav-button {
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  color: #000000;
   font-size: 12px;
-  letter-spacing: 0.05em;
   text-transform: uppercase;
-  transition: color 0.3s ease;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(147, 51, 234, 0.1);
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (min-width: 768px) {
-  .nav-link {
+  .nav-button {
     font-size: 14px;
   }
 }
 
-.nav-link:hover {
-  color: #9333ea;
+.nav-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.nav-button:hover::before {
+  left: 100%;
+}
+
+.nav-button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(147, 51, 234, 0.3) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+
+.nav-button:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 30px rgba(147, 51, 234, 0.2),
+    0 0 60px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+  color: #000000;
+}
+
+.nav-button:hover::after {
+  opacity: 1;
+}
+
+.nav-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Hero Section */
@@ -513,7 +585,7 @@ body {
   font-size: 14px;
   margin-bottom: 24px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .newsletter-form {
@@ -524,21 +596,21 @@ body {
 .newsletter-input {
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.02);
+  color: #000000;
   font-size: 16px;
   border-radius: 0;
   font-family: 'Quantico', sans-serif;
 }
 
 .newsletter-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .newsletter-input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(0, 0, 0, 0.4);
 }
 
 .newsletter-btn {
@@ -600,8 +672,8 @@ body {
 
 /* Footer */
 .footer {
-  background: #0c0c0d;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding: 48px 0;
 }
 
@@ -613,7 +685,7 @@ body {
 }
 
 .social-link {
-  color: white;
+  color: #000000;
   transition: opacity 0.3s ease;
 }
 
@@ -631,7 +703,7 @@ body {
 }
 
 .footer-copyright-text {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.6);
   font-size: 12px;
   margin-bottom: 8px;
 }
@@ -651,14 +723,14 @@ body {
 }
 
 .footer-links a {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.6);
   text-decoration: none;
   font-size: 12px;
   transition: color 0.3s ease;
 }
 
 .footer-links a:hover {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 /* Promotional Modal */
@@ -680,8 +752,8 @@ body {
 }
 
 .promo-content {
-  background: #0c0c0d;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 90%;
   position: relative;
@@ -694,7 +766,7 @@ body {
   right: 16px;
   background: none;
   border: none;
-  color: white;
+  color: #000000;
   font-size: 24px;
   cursor: pointer;
   transition: opacity 0.3s ease;
@@ -715,7 +787,7 @@ body {
   font-size: 48px;
   font-weight: 700;
   margin-bottom: 24px;
-  color: white;
+  color: #000000;
 }
 
 .promo-unlock {
@@ -724,14 +796,14 @@ body {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: 8px;
-  color: white;
+  color: #000000;
 }
 
 .promo-discount {
   font-size: 48px;
   font-weight: 700;
   margin-bottom: 8px;
-  color: white;
+  color: #000000;
 }
 
 .promo-order {
@@ -740,15 +812,15 @@ body {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: 32px;
-  color: white;
+  color: #000000;
 }
 
 .promo-input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.02);
+  color: #000000;
   border-radius: 25px;
   font-size: 16px;
   margin-bottom: 16px;
@@ -757,24 +829,24 @@ body {
 }
 
 .promo-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .promo-input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(0, 0, 0, 0.4);
 }
 
 .promo-disclaimer {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   margin-bottom: 24px;
   line-height: 1.4;
   text-align: left;
 }
 
 .promo-link {
-  color: white;
+  color: #000000;
   text-decoration: underline;
 }
 

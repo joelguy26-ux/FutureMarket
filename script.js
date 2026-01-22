@@ -39,13 +39,28 @@ const amazonProducts = [
 // This system allows you to sell your own products via Shopify
 // while also displaying Amazon affiliate products above
 
-// Shopify Configuration
+// Shopify Configuration - FORCE VALUES (DO NOT CHANGE)
+// These values are hardcoded to prevent caching issues
+const FORCE_STORE_NAME = 'jsigku-13';
+const FORCE_API_KEY = 'c57b0c7e84c2698e9e84f065aeac9ea3';
+
 let SHOPIFY_CONFIG = {
-    store: 'cbpgj6-gb',
-    apiKey: '202eb1236910457febb7ee281668f083',
+    store: FORCE_STORE_NAME,
+    apiKey: FORCE_API_KEY,
     apiVersion: '2023-10',
     enabled: true
 };
+
+// Immediately override any cached values
+SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+
+console.log('🔧 SHOPIFY CONFIG INITIALIZED:', {
+    store: SHOPIFY_CONFIG.store,
+    apiKey: SHOPIFY_CONFIG.apiKey?.substring(0, 10) + '...',
+    expectedStore: 'jsigku-13',
+    expectedApiKeyStart: 'c57b0c7e84'
+});
 
 // Shopify Buy Button client
 let shopifyBuyClient = null;
@@ -857,8 +872,109 @@ async function fetchProductsFromShopify() {
     }
 
     try {
-        // First, get all collections and their products
-        const query = `
+        // Try fetching products directly first (simpler, requires fewer permissions)
+        const productsQuery = `
+            query {
+                products(first: 50) {
+                    edges {
+                        node {
+                            id
+                            title
+                            handle
+                            description
+                            images(first: 2) {
+                                edges {
+                                    node {
+                                        url
+                                    }
+                                }
+                            }
+                            variants(first: 1) {
+                                edges {
+                                    node {
+                                        price {
+                                            amount
+                                        }
+                                        compareAtPrice {
+                                            amount
+                                        }
+                                        availableForSale
+                                    }
+                                }
+                            }
+                            tags
+                        }
+                    }
+                }
+            }
+        `;
+
+        // First, try to get products directly
+        // Force use of current config - don't allow any cached values
+        SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+        SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+        
+        const apiUrl = `https://${FORCE_STORE_NAME}.myshopify.com/api/2023-10/graphql.json`;
+        console.log('🌐 Fetching products from:', apiUrl);
+        console.log('🔑 Using API key:', FORCE_API_KEY.substring(0, 10) + '...');
+        console.log('📋 Current SHOPIFY_CONFIG:', {
+            store: SHOPIFY_CONFIG.store,
+            apiKey: SHOPIFY_CONFIG.apiKey?.substring(0, 10) + '...'
+        });
+        
+        let response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'X-Shopify-Storefront-Access-Token': FORCE_API_KEY,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: productsQuery })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const allProducts = [];
+            
+            if (data.data?.products?.edges) {
+                data.data.products.edges.forEach(productEdge => {
+                    const product = productEdge.node;
+                    const variant = product.variants.edges[0]?.node;
+                    const images = product.images.edges || [];
+                    const primaryImage = images[0]?.node;
+                    const secondaryImage = images[1]?.node || primaryImage;
+                    
+                    // Determine collection assignment
+                    let productCollection = 'myrtle';
+                    if (product.tags.includes('featured')) {
+                        productCollection = 'featured';
+                    }
+                    
+                    allProducts.push({
+                        id: product.id.split('/').pop(),
+                        name: product.title.toUpperCase(),
+                        price: parseFloat(variant?.price?.amount || 0),
+                        compareAtPrice: variant?.compareAtPrice?.amount ? parseFloat(variant.compareAtPrice.amount) : null,
+                        image: primaryImage?.url || 'https://via.placeholder.com/400x400',
+                        images: images.map(img => img.node.url),
+                        soldOut: !variant?.availableForSale || false,
+                        collection: productCollection,
+                        description: product.description,
+                        handle: product.handle,
+                        tags: product.tags,
+                        collectionName: 'All Products'
+                    });
+                });
+            }
+
+            // Import the products
+            importProducts(allProducts);
+            console.log(`✅ Successfully loaded ${allProducts.length} products directly from Shopify!`);
+            return true;
+        }
+
+        // If direct products query fails, try collections query (fallback)
+        console.log('⚠️ Direct products query failed, trying collections query...');
+        const collectionsQuery = `
             query {
                 collections(first: 20) {
                     edges {
@@ -903,17 +1019,32 @@ async function fetchProductsFromShopify() {
             }
         `;
 
-        const response = await fetch(`https://${SHOPIFY_CONFIG.store}.myshopify.com/api/2023-10/graphql.json`, {
+        // Use explicit values for collections query too
+        SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+        SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+        
+        const collectionsUrl = `https://${FORCE_STORE_NAME}.myshopify.com/api/2023-10/graphql.json`;
+        console.log('🌐 Fetching collections from:', collectionsUrl);
+        
+        response = await fetch(collectionsUrl, {
             method: 'POST',
             headers: {
-                'X-Shopify-Storefront-Access-Token': SHOPIFY_CONFIG.apiKey,
+                'X-Shopify-Storefront-Access-Token': FORCE_API_KEY,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ query })
+            body: JSON.stringify({ query: collectionsQuery })
         });
 
         if (!response.ok) {
-            throw new Error(`Shopify API error: ${response.status}`);
+            const errorText = await response.text();
+            console.error('Shopify API Error Details:', {
+                status: response.status,
+                statusText: response.statusText,
+                response: errorText,
+                store: SHOPIFY_CONFIG.store,
+                apiKeyLength: SHOPIFY_CONFIG.apiKey?.length
+            });
+            throw new Error(`Shopify API error: ${response.status} - ${errorText}`);
         }
 
         const data = await response.json();
@@ -1017,7 +1148,13 @@ async function fetchCollectionsFromShopify() {
         });
 
         if (!response.ok) {
-            throw new Error(`Shopify Collections API error: ${response.status}`);
+            const errorText = await response.text();
+            console.error('Shopify Collections API Error Details:', {
+                status: response.status,
+                statusText: response.statusText,
+                response: errorText
+            });
+            throw new Error(`Shopify Collections API error: ${response.status} - ${errorText}`);
         }
 
         const data = await response.json();
@@ -1140,10 +1277,69 @@ function renderShopifyProducts() {
     console.log(`✅ Rendered ${products.length} Shopify products`);
 }
 
+// Test Shopify API connection
+async function testShopifyConnection() {
+    // Force use of correct values
+    SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+    SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+    
+    console.log('🔍 Testing Shopify API connection...');
+    console.log('Store:', FORCE_STORE_NAME);
+    console.log('Full Store URL:', `https://${FORCE_STORE_NAME}.myshopify.com`);
+    console.log('API Key (first 10 chars):', FORCE_API_KEY.substring(0, 10) + '...');
+    console.log('API Key length:', FORCE_API_KEY.length);
+    
+    try {
+        // Simple test query
+        const testQuery = `
+            query {
+                shop {
+                    name
+                }
+            }
+        `;
+        
+        const testUrl = `https://${FORCE_STORE_NAME}.myshopify.com/api/2023-10/graphql.json`;
+        console.log('🌐 Test URL:', testUrl);
+        
+        const response = await fetch(testUrl, {
+            method: 'POST',
+            headers: {
+                'X-Shopify-Storefront-Access-Token': FORCE_API_KEY,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: testQuery })
+        });
+        
+        const responseText = await response.text();
+        console.log('Test Response Status:', response.status);
+        console.log('Test Response:', responseText);
+        
+        if (response.ok) {
+            const data = JSON.parse(responseText);
+            console.log('✅ API Connection successful! Shop name:', data.data?.shop?.name);
+            return true;
+        } else {
+            console.error('❌ API Connection failed:', response.status, responseText);
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Connection test error:', error);
+        return false;
+    }
+}
+
 // Initialize Shopify products
 async function initializeShopifyProducts() {
     if (!SHOPIFY_CONFIG.enabled) {
         console.log('📦 Shopify integration disabled.');
+        return;
+    }
+
+    // Test connection first
+    const connectionOk = await testShopifyConnection();
+    if (!connectionOk) {
+        console.log('⚠️ API connection test failed. Please check your credentials.');
         return;
     }
 
@@ -1160,7 +1356,7 @@ async function initializeShopifyProducts() {
     }
 }
 
-// Initialize Shopify Buy Button
+// Initialize Shopify Buy Button - MANUAL INITIALIZATION
 function initializeShopifyBuyButton() {
     if (!window.ShopifyBuy) {
         console.log('⏳ Waiting for Shopify Buy Button SDK to load...');
@@ -1168,24 +1364,70 @@ function initializeShopifyBuyButton() {
         return;
     }
 
+    // Force correct credentials before creating client
+    SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+    SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+    
+    console.log('🔧 Manually initializing Shopify Buy Button with:', {
+        store: FORCE_STORE_NAME,
+        apiKeyLength: FORCE_API_KEY.length
+    });
+
+    // Ensure we have the correct values
+    if (!FORCE_STORE_NAME || !FORCE_API_KEY) {
+        console.error('❌ Cannot initialize: Missing store name or API key');
+        return;
+    }
+
+    // Manually create the client with correct credentials
     if (window.ShopifyBuy.UI) {
         createShopifyBuyClient();
     } else {
-        window.ShopifyBuy.onReady = createShopifyBuyClient;
+        // Wait for UI to be ready, then create client
+        window.ShopifyBuy.onReady = function() {
+            console.log('✅ Shopify Buy SDK UI ready, creating client...');
+            createShopifyBuyClient();
+        };
     }
 }
 
 function createShopifyBuyClient() {
-    if (!SHOPIFY_CONFIG.store || !SHOPIFY_CONFIG.apiKey) {
-        console.log('⚠️ Shopify credentials not set');
+    // CRITICAL: Force use of correct values - no caching allowed
+    SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+    SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+    
+    if (!FORCE_STORE_NAME || !FORCE_API_KEY) {
+        console.error('❌ Cannot create client: Missing credentials');
         return;
     }
 
+    const domain = `${FORCE_STORE_NAME}.myshopify.com`;
+    
+    console.log('🔧 Creating Shopify Buy Client MANUALLY:', {
+        domain: domain,
+        apiKey: FORCE_API_KEY.substring(0, 10) + '...',
+        apiKeyLength: FORCE_API_KEY.length
+    });
+
+    // Double-check we're not using any cached values
+    if (SHOPIFY_CONFIG.store !== FORCE_STORE_NAME) {
+        console.warn('⚠️ Store mismatch! Forcing correct value...');
+        SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+    }
+    
+    if (SHOPIFY_CONFIG.apiKey !== FORCE_API_KEY) {
+        console.warn('⚠️ API key mismatch! Forcing correct value...');
+        SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+    }
+
     try {
+        // Build client with explicit values - no config object
         shopifyBuyClient = ShopifyBuy.buildClient({
-            domain: `${SHOPIFY_CONFIG.store}.myshopify.com`,
-            storefrontAccessToken: SHOPIFY_CONFIG.apiKey
+            domain: domain,
+            storefrontAccessToken: FORCE_API_KEY
         });
+        
+        console.log('✅ Shopify Buy Client created successfully with:', domain);
 
         ShopifyBuy.UI.onReady(shopifyBuyClient).then(function(ui) {
             shopifyBuyUI = ui;
@@ -1271,22 +1513,43 @@ function disableShopifyIntegration() {
 
 // Initialize both Amazon and Shopify products on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // CRITICAL: Force config values BEFORE anything else runs
+    SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+    SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+    SHOPIFY_CONFIG.enabled = true;
+    
+    console.log('🚀 DOMContentLoaded - FORCING CONFIG:', {
+        store: FORCE_STORE_NAME,
+        apiKey: FORCE_API_KEY.substring(0, 10) + '...',
+        expectedUrl: `https://${FORCE_STORE_NAME}.myshopify.com`
+    });
+    
     // Initialize Amazon affiliate products (always show)
     initializeAmazonProducts();
     
-    // Initialize Shopify products (if enabled)
-    if (SHOPIFY_CONFIG.enabled && SHOPIFY_CONFIG.store && SHOPIFY_CONFIG.apiKey) {
-        console.log('🔄 Auto-connecting to Shopify...');
-        initializeShopifyProducts();
-        initializeShopifyBuyButton();
-    } else {
-        // Check for saved credentials in localStorage
-        const savedCredentials = loadShopifyCredentials();
-        if (savedCredentials) {
-            console.log('🔄 Auto-connecting to Shopify with saved credentials...');
-            enableShopifyIntegration(savedCredentials.store, savedCredentials.apiKey, false);
-        }
+    // IMPORTANT: Clear localStorage again (in case SDK tried to use it)
+    try {
+        localStorage.removeItem('shopify_store');
+        localStorage.removeItem('shopify_api_key');
+        localStorage.removeItem('shopify_enabled');
+        console.log('🧹 Cleared localStorage again in DOMContentLoaded');
+    } catch (e) {
+        console.log('⚠️ Could not clear localStorage:', e);
     }
+    
+    // Force config again after clearing
+    SHOPIFY_CONFIG.store = FORCE_STORE_NAME;
+    SHOPIFY_CONFIG.apiKey = FORCE_API_KEY;
+    
+    console.log('📋 Final Config Verification:', {
+        store: SHOPIFY_CONFIG.store,
+        matches: SHOPIFY_CONFIG.store === FORCE_STORE_NAME,
+        apiKeyMatches: SHOPIFY_CONFIG.apiKey === FORCE_API_KEY,
+        expectedUrl: `https://${FORCE_STORE_NAME}.myshopify.com`
+    });
+    
+    // Our Store uses the themed buy-button embed in index.html (product-component-1769097705122).
+    // Shopify product fetch + dynamic buy buttons are disabled.
 });
 
 // Add hover effects to product cards
