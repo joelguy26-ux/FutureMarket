@@ -1,0 +1,9 @@
+{
+  "name": "futuremarket",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "npx --yes serve . -p 3000",
+    "serve:py": "python -m http.server 3000"
+  }
+}

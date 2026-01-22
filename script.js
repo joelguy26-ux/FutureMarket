@@ -25,8 +25,8 @@ const amazonProducts = [
         id: 'product-1',
         name: 'Heated Blanket',
         price: 0,
-        image: 'images/Gemini_Generated_Image_lk9naalk9naalk9n.png',
-        image2: 'images/Gemini_Generated_Image_lk9naalk9naalk9n.png',
+        image: './images/Gemini_Generated_Image_lk9naalk9naalk9n.png',
+        image2: './images/Gemini_Generated_Image_lk9naalk9naalk9n.png',
         affiliateLink: 'https://amzn.to/4sKu8B6',
         category: 'home'
     }
