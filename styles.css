@@ -415,6 +415,22 @@ body {
   padding-right: 24px;
 }
 
+/* Our Store section – no blue/cyan; only purple square on buy buttons */
+.shopify-section .section-title {
+  text-shadow: none;
+  border-bottom: none;
+}
+.shopify-section .container {
+  box-shadow: none;
+  border-left: none;
+  border-right: none;
+}
+.shopify-section {
+  box-shadow: none;
+  border-top: none;
+  border-bottom: none;
+}
+
 /* Product Grid */
 .product-grid {
   display: grid;
