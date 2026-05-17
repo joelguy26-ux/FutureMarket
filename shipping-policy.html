@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shipping Policy | Future Market</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="./images/logo.png" type="image/png">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="promo-banner">
+        <div class="container">
+            <div class="promo-banner-content">
+                <span class="promo-text">50% OFF STORE WIDE!</span>
+                <button class="promo-shop-btn" onclick="location.href='index.html'">Shop Now</button>
+            </div>
+        </div>
+    </div>
+    <header class="header">
+        <div class="container">
+            <div class="nav-main">
+                <div class="mobile-menu-container">
+                    <button class="mobile-menu-btn" id="mobile-menu" type="button" aria-expanded="false" aria-controls="header-dropdown"><i class="fas fa-bars"></i></button>
+                    <div class="mobile-dropdown" id="mobile-dropdown">
+                        <a href="index.html" class="dropdown-link">Shop</a>
+                        <a href="index.html" class="dropdown-link">Reviews</a>
+                        <a href="index.html" class="dropdown-link">Track Your Order</a>
+                        <a href="index.html" class="dropdown-link">Follow</a>
+                        <a href="refund-policy.html" class="dropdown-link">Refund Policy</a>
+                        <a href="shipping-policy.html" class="dropdown-link">Shipping Policy</a>
+                        <a href="index.html" class="dropdown-link">Size Chart</a>
+                        <a href="invoice-generator/index.html" class="dropdown-link dropdown-link--paid">Invoice Generator <span class="dropdown-badge">Paid</span></a>
+                    </div>
+                </div>
+                <div class="logo-center">
+                    <a href="index.html" class="logo-circle">
+                        <img src="images/logo.png" alt="Future Market" class="logo-image" />
+                    </a>
+                </div>
+                <div class="nav-right">
+                    <button class="nav-icon search-btn" onclick="location.href='index.html'"><i class="fas fa-search"></i></button>
+                    <button class="nav-icon" onclick="location.href='index.html'"><i class="fas fa-user"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav class="main-nav">
+        <div class="container">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Shop</a>
+                <a href="index.html" class="nav-link">Reviews</a>
+                <a href="index.html" class="nav-link">Track Your Order</a>
+                <a href="index.html" class="nav-link">Follow</a>
+                <a href="refund-policy.html" class="nav-link">Refund Policy</a>
+                <a href="shipping-policy.html" class="nav-link">Shipping Policy</a>
+                <a href="index.html" class="nav-link">Size Chart</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="policy-page">
+        <h1>Shipping Policy</h1>
+        <p>Thank you for shopping with us! Below is information about how and when your order will be delivered.</p>
+
+        <h2>Processing Time</h2>
+        <ul>
+            <li>Orders are processed within 1–3 business days (excluding weekends and holidays).</li>
+            <li>You will receive a confirmation email once your order has shipped.</li>
+        </ul>
+
+        <h2>Shipping Time</h2>
+        <ul>
+            <li><strong>Standard Shipping:</strong> 7–15 business days</li>
+            <li><strong>International Shipping:</strong> 10–25 business days<br>
+            <em>(Delivery times may vary due to customs, carrier delays, or high demand.)</em></li>
+        </ul>
+
+        <h2>Shipping Rates</h2>
+        <ul>
+            <li>Shipping costs are calculated at checkout.</li>
+            <li>Promotional free shipping may apply on select orders.</li>
+        </ul>
+
+        <h2>Tracking</h2>
+        <ul>
+            <li>Once shipped, you will receive a tracking number via email.</li>
+            <li>Tracking updates may take 24–72 hours to appear.</li>
+        </ul>
+
+        <h2>Customs & Duties</h2>
+        <p>Customers are responsible for any customs fees, duties, or taxes imposed by their country.</p>
+
+        <h2>Incorrect Address</h2>
+        <p>Please ensure your shipping address is correct at checkout. We are not responsible for orders shipped to incorrectly provided addresses.</p>
+
+        <h2>Lost or Delayed Packages</h2>
+        <p>If your order has not arrived within the estimated delivery timeframe, please contact us at <a href="mailto:support@futuremarket.com">support@futuremarket.com</a> and we will assist you.</p>
+    </main>
+    <script>
+    (function() {
+        var btn = document.getElementById('mobile-menu');
+        var dropdown = document.getElementById('mobile-dropdown');
+        if (!btn || !dropdown) return;
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('active');
+            btn.classList.toggle('active');
+        });
+        document.querySelectorAll('.dropdown-link').forEach(function(link) {
+            link.addEventListener('click', function() { dropdown.classList.remove('active'); btn.classList.remove('active'); });
+        });
+        document.addEventListener('click', function(e) {
+            if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+                btn.classList.remove('active');
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

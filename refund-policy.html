@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Refund Policy | Future Market</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="./images/logo.png" type="image/png">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="promo-banner">
+        <div class="container">
+            <div class="promo-banner-content">
+                <span class="promo-text">50% OFF STORE WIDE!</span>
+                <button class="promo-shop-btn" onclick="location.href='index.html'">Shop Now</button>
+            </div>
+        </div>
+    </div>
+    <header class="header">
+        <div class="container">
+            <div class="nav-main">
+                <div class="mobile-menu-container">
+                    <button class="mobile-menu-btn" id="mobile-menu" type="button" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+                    <div class="mobile-dropdown" id="mobile-dropdown">
+                        <a href="index.html" class="dropdown-link">Shop</a>
+                        <a href="index.html" class="dropdown-link">Reviews</a>
+                        <a href="index.html" class="dropdown-link">Track Your Order</a>
+                        <a href="index.html" class="dropdown-link">Follow</a>
+                        <a href="refund-policy.html" class="dropdown-link">Refund Policy</a>
+                        <a href="shipping-policy.html" class="dropdown-link">Shipping Policy</a>
+                        <a href="index.html" class="dropdown-link">Size Chart</a>
+                        <a href="invoice-generator/index.html" class="dropdown-link dropdown-link--paid">Invoice Generator <span class="dropdown-badge">Paid</span></a>
+                    </div>
+                </div>
+                <div class="logo-center">
+                    <a href="index.html" class="logo-circle">
+                        <img src="images/logo.png" alt="Future Market" class="logo-image" />
+                    </a>
+                </div>
+                <div class="nav-right">
+                    <button class="nav-icon search-btn" onclick="location.href='index.html'"><i class="fas fa-search"></i></button>
+                    <button class="nav-icon" onclick="location.href='index.html'"><i class="fas fa-user"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav class="main-nav">
+        <div class="container">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Shop</a>
+                <a href="index.html" class="nav-link">Reviews</a>
+                <a href="index.html" class="nav-link">Track Your Order</a>
+                <a href="index.html" class="nav-link">Follow</a>
+                <a href="refund-policy.html" class="nav-link">Refund Policy</a>
+                <a href="shipping-policy.html" class="nav-link">Shipping Policy</a>
+                <a href="index.html" class="nav-link">Size Chart</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="policy-page">
+        <h1>Refund Policy</h1>
+        <p>We want you to be completely satisfied with your purchase. If for any reason you are not happy, we're here to help.</p>
+
+        <h2>Returns</h2>
+        <p>You have 30 days from the date of delivery to request a return.</p>
+        <ul>
+            <li>To be eligible for a return, the item must be unused, in original condition, and in its original packaging.</li>
+            <li>Proof of purchase (order number or receipt) is required.</li>
+        </ul>
+
+        <h2>Non-Returnable Items</h2>
+        <p>The following items are not eligible for return:</p>
+        <ul>
+            <li>Perishable goods</li>
+            <li>Personal care or hygiene products</li>
+            <li>Gift cards</li>
+            <li>Items marked as final sale</li>
+        </ul>
+
+        <h2>Refunds</h2>
+        <ul>
+            <li>Once your return is received and inspected, we will notify you of approval or rejection.</li>
+            <li>Approved refunds will be processed to your original payment method within 5–10 business days.</li>
+            <li>Shipping costs are non-refundable unless the return is due to our error (wrong or defective item).</li>
+        </ul>
+
+        <h2>Damaged or Incorrect Items</h2>
+        <p>If your item arrives damaged, defective, or incorrect, please contact us within 48 hours of delivery with photos so we can resolve the issue quickly.</p>
+
+        <h2>Exchanges</h2>
+        <p>We only replace items if they are defective or damaged.</p>
+
+        <h2>How to Start a Return</h2>
+        <p>Contact us at <a href="mailto:support@futuremarket.com">support@futuremarket.com</a> with your order number and reason for return.</p>
+    </main>
+    <script>
+    (function() {
+        var btn = document.getElementById('mobile-menu');
+        var dropdown = document.getElementById('mobile-dropdown');
+        if (!btn || !dropdown) return;
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var active = dropdown.classList.toggle('active');
+            btn.classList.toggle('active');
+            var icon = btn.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-bars', !active);
+                icon.classList.toggle('fa-times', active);
+            }
+        });
+        document.querySelectorAll('.dropdown-link').forEach(function(link) {
+            link.addEventListener('click', function() {
+                dropdown.classList.remove('active');
+                btn.classList.remove('active');
+                var icon = btn.querySelector('i');
+                if (icon) { icon.classList.add('fa-bars'); icon.classList.remove('fa-times'); }
+            });
+        });
+        document.addEventListener('click', function(e) {
+            if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+                btn.classList.remove('active');
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

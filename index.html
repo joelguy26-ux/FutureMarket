@@ -38,24 +38,33 @@
     <header class="header">
         <div class="container">
             <div class="nav-main">
-                <!-- Left - Hamburger Menu -->
-                <button class="mobile-menu-btn" id="mobile-menu">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <div class="mobile-menu-container">
+                    <button class="mobile-menu-btn" id="mobile-menu" type="button" aria-label="Open menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="mobile-dropdown" id="mobile-dropdown">
+                        <a href="index.html" class="dropdown-link">Shop</a>
+                        <a href="index.html" class="dropdown-link">Reviews</a>
+                        <a href="index.html" class="dropdown-link">Track Your Order</a>
+                        <a href="index.html" class="dropdown-link">Follow</a>
+                        <a href="refund-policy.html" class="dropdown-link">Refund Policy</a>
+                        <a href="shipping-policy.html" class="dropdown-link">Shipping Policy</a>
+                        <a href="index.html" class="dropdown-link">Size Chart</a>
+                        <a href="invoice-generator/index.html" class="dropdown-link dropdown-link--paid">Invoice Generator <span class="dropdown-badge">Paid</span></a>
+                    </div>
+                </div>
 
-                <!-- Center - Logo -->
                 <div class="logo-center">
-                    <a href="#" class="logo-circle">
+                    <a href="index.html" class="logo-circle">
                         <img src="images/logo.png" alt="Future Market Logo" class="logo-image" />
                     </a>
                 </div>
 
-                <!-- Right - Icons -->
                 <div class="nav-right">
-                    <button class="nav-icon search-btn">
+                    <button class="nav-icon search-btn" type="button" aria-label="Search">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button class="nav-icon">
+                    <button class="nav-icon" type="button" aria-label="Account">
                         <i class="fas fa-user"></i>
                     </button>
                 </div>
@@ -67,596 +76,34 @@
     <nav class="main-nav">
         <div class="container">
             <div class="nav-links">
-                <a href="#" class="nav-button">Shop</a>
-                <a href="#" class="nav-button">Reviews</a>
-                <a href="#" class="nav-button">Track Your Order</a>
-                <a href="#" class="nav-button">Follow</a>
-                <a href="#" class="nav-button">Refund Policy</a>
-                <a href="#" class="nav-button">Shipping Policy</a>
-                <a href="#" class="nav-button">Size Chart</a>
+                <a href="index.html" class="nav-link">Shop</a>
+                <a href="index.html" class="nav-link">Reviews</a>
+                <a href="index.html" class="nav-link">Track Your Order</a>
+                <a href="index.html" class="nav-link">Follow</a>
+                <a href="refund-policy.html" class="nav-link">Refund Policy</a>
+                <a href="shipping-policy.html" class="nav-link">Shipping Policy</a>
+                <a href="index.html" class="nav-link">Size Chart</a>
             </div>
         </div>
     </nav>
 
-    <!-- Shopify Products Section - Themed buy button embed -->
-    <section class="product-section shopify-section">
-        <div class="container">
-            <h2 class="section-title">Our Store</h2>
-            <div id="product-component-1769124723372"></div>
-            <script type="text/javascript">
-            /*<![CDATA[*/
-            (function () {
-              var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
-              if (window.ShopifyBuy) {
-                if (window.ShopifyBuy.UI) {
-                  ShopifyBuyInit();
-                } else {
-                  loadScript();
-                }
-              } else {
-                loadScript();
-              }
-              function loadScript() {
-                var script = document.createElement('script');
-                script.async = true;
-                script.src = scriptURL;
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-                script.onload = ShopifyBuyInit;
-              }
-              function ShopifyBuyInit() {
-                var client = ShopifyBuy.buildClient({
-                  domain: 'jsigku-13.myshopify.com',
-                  storefrontAccessToken: '9c1c187a862233d1048a7b0d5e4cc61e',
-                });
-                ShopifyBuy.UI.onReady(client).then(function (ui) {
-                  ui.createComponent('product', {
-                    id: '15393010024817',
-                    node: document.getElementById('product-component-1769124723372'),
-                    moneyFormat: '%24%7B%7Bamount%7D%7D',
-                    options: {
-  "product": {
-    "styles": {
-      "product": {
-        "@media (min-width: 601px)": {
-          "max-width": "100%",
-          "margin-left": "0",
-          "margin-bottom": "50px"
-        },
-        "text-align": "left",
-        "border": "2px solid #9e57b6",
-        "border-radius": "0px",
-        "padding": "20px"
-      },
-      "title": {
-        "font-size": "26px"
-      },
-      "button": {
-        "font-family": "Lato, sans-serif",
-        "font-weight": "bold",
-        ":hover": {
-          "background-color": "#8e4ea4"
-        },
-        "background-color": "#9e57b6",
-        ":focus": {
-          "background-color": "#8e4ea4"
-        }
-      },
-      "price": {
-        "font-size": "18px"
-      },
-      "compareAt": {
-        "font-size": "15.299999999999999px"
-      },
-      "unitPrice": {
-        "font-size": "15.299999999999999px"
-      }
-    },
-    "buttonDestination": "checkout",
-    "layout": "horizontal",
-    "contents": {
-      "img": false,
-      "imgWithCarousel": true,
-      "description": true
-    },
-    "width": "100%",
-    "text": {
-      "button": "Buy now"
-    },
-    "googleFonts": [
-      "Lato"
-    ]
-  },
-  "productSet": {
-    "styles": {
-      "products": {
-        "@media (min-width: 601px)": {
-          "margin-left": "-20px"
-        }
-      }
-    }
-  },
-  "modalProduct": {
-    "contents": {
-      "img": false,
-      "imgWithCarousel": true,
-      "button": false,
-      "buttonWithQuantity": true
-    },
-    "styles": {
-      "product": {
-        "@media (min-width: 601px)": {
-          "max-width": "100%",
-          "margin-left": "0px",
-          "margin-bottom": "0px"
-        }
-      },
-      "button": {
-        "font-family": "Lato, sans-serif",
-        "font-weight": "bold",
-        ":hover": {
-          "background-color": "#8e4ea4"
-        },
-        "background-color": "#9e57b6",
-        ":focus": {
-          "background-color": "#8e4ea4"
-        }
-      },
-      "title": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "bold",
-        "font-size": "26px",
-        "color": "#4c4c4c"
-      },
-      "price": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "18px",
-        "color": "#4c4c4c"
-      },
-      "compareAt": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "15.299999999999999px",
-        "color": "#4c4c4c"
-      },
-      "unitPrice": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "15.299999999999999px",
-        "color": "#4c4c4c"
-      }
-    },
-    "googleFonts": [
-      "Lato"
-    ],
-    "text": {
-      "button": "Add to cart"
-    }
-  },
-  "option": {},
-  "cart": {
-    "styles": {
-      "button": {
-        "font-family": "Lato, sans-serif",
-        "font-weight": "bold",
-        ":hover": {
-          "background-color": "#8e4ea4"
-        },
-        "background-color": "#9e57b6",
-        ":focus": {
-          "background-color": "#8e4ea4"
-        }
-      }
-    },
-    "text": {
-      "total": "Subtotal",
-      "button": "Checkout"
-    },
-    "googleFonts": [
-      "Lato"
-    ]
-  },
-  "toggle": {
-    "styles": {
-      "toggle": {
-        "font-family": "Lato, sans-serif",
-        "font-weight": "bold",
-        "background-color": "#9e57b6",
-        ":hover": {
-          "background-color": "#8e4ea4"
-        },
-        ":focus": {
-          "background-color": "#8e4ea4"
-        }
-      }
-    },
-    "googleFonts": [
-      "Lato"
-    ]
-  }
-},
-                  });
-                  function cleanDescriptionText(element) {
-                    if (!element) return;
-                    
-                    // Get all text nodes and elements
-                    var walker = document.createTreeWalker(
-                      element,
-                      NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
-                      null,
-                      false
-                    );
-                    
-                    var nodesToRemove = [];
-                    var node;
-                    
-                    // Find and mark nodes with unwanted content
-                    while (node = walker.nextNode()) {
-                      if (node.nodeType === Node.TEXT_NODE) {
-                        var text = node.textContent || '';
-                        var unwantedPatterns = [
-                          /iPhone 17/i,
-                          /charges to 50% in 20 minutes/i,
-                          /Built-in phone stand/i,
-                          /360° rotation/i,
-                          /adjustable tilt/i,
-                          /240W fast charging for a full charge/i,
-                          /Backward compatible/i,
-                          /fast charging for laptops/i,
-                          /Supports data transmission/i,
-                          /480Mbps/i,
-                          /Product Name:/i,
-                          /Material:/i,
-                          /Color:/i,
-                          /Cable Length:/i,
-                          /Transmission Rate:/i,
-                          /Interface & Output Power:/i,
-                          /The above data is from Lab/i,
-                          /Thank you for your support/i,
-                          /Welcome to buy from us/i,
-                          /We guarantee the quality/i,
-                          /If you need more this item/i,
-                          /we will give you our best price/i,
-                          /Leave your message/i
-                        ];
-                        
-                        var hasUnwanted = unwantedPatterns.some(function(pattern) {
-                          return pattern.test(text);
-                        });
-                        
-                        if (hasUnwanted) {
-                          // Remove the parent element if it's a paragraph or div
-                          var parent = node.parentElement;
-                          if (parent && (parent.tagName === 'P' || parent.tagName === 'DIV' || parent.tagName === 'SPAN')) {
-                            if (parent.textContent.trim().match(/iPhone|Built-in|360°|240W fast charging for a full|Backward compatible|Supports data|480Mbps|Product Name|Material:|Color:|Cable Length|Transmission Rate|Interface & Output|The above data|Thank you|Welcome to buy|We guarantee|If you need more|we will give you|Leave your message/i)) {
-                              nodesToRemove.push(parent);
-                            }
-                          } else {
-                            node.textContent = '';
-                          }
-                        }
-                      } else if (node.nodeType === Node.ELEMENT_NODE) {
-                        var elemText = node.textContent || '';
-                        if (elemText.match(/iPhone 17|Built-in phone stand|360° rotation|240W fast charging for a full charge|Backward compatible|Supports data transmission|480Mbps|Product Name:|Material:|Color:|Cable Length:|Transmission Rate:|Interface & Output Power:|The above data is from Lab|Thank you for your support|Welcome to buy from us|We guarantee the quality|If you need more this item|we will give you our best price|Leave your message/i)) {
-                          nodesToRemove.push(node);
-                        }
-                      }
-                    }
-                    
-                    // Remove marked nodes
-                    nodesToRemove.forEach(function(node) {
-                      if (node && node.parentNode) {
-                        node.parentNode.removeChild(node);
-                      }
-                    });
-                    
-                    // Also do regex replacement on innerHTML as backup
-                    if (element.innerHTML) {
-                      var html = element.innerHTML;
-                      html = html.replace(/<p[^>]*>.*?iPhone 17.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Built-in phone stand.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?360° rotation.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?240W fast charging for a full charge.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Backward compatible.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Supports data transmission.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?480Mbps.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Product Name:.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Material:.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Color:.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Cable Length:.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Transmission Rate:.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Interface & Output Power:.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?The above data is from Lab.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Thank you for your support.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Welcome to buy from us.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?We guarantee the quality.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?If you need more this item.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?we will give you our best price.*?<\/p>/gi, '');
-                      html = html.replace(/<p[^>]*>.*?Leave your message.*?<\/p>/gi, '');
-                      element.innerHTML = html;
-                    }
-                  }
-                  
-                  function makeDescriptionDropdown() {
-                    var root = document.getElementById('product-component-1769124723372');
-                    if (!root) return;
-                    var desc = root.querySelector('.shopify-buy__product__description') ||
-                      root.querySelector('[class*="description"]') ||
-                      root.querySelector('.shopify-buy__product p');
-                    if (!desc) return;
-                    if (desc.closest('.product-description-dropdown')) return;
-                    
-                    // Clean the description text before wrapping
-                    cleanDescriptionText(desc);
-                    
-                    var wrap = document.createElement('div');
-                    wrap.className = 'product-description-dropdown';
-                    var toggle = document.createElement('button');
-                    toggle.type = 'button';
-                    toggle.className = 'product-description-dropdown__toggle';
-                    toggle.setAttribute('aria-expanded', 'false');
-                    toggle.textContent = 'Specifications / Description';
-                    var icon = document.createElement('span');
-                    icon.className = 'product-description-dropdown__icon';
-                    icon.setAttribute('aria-hidden', 'true');
-                    icon.textContent = ' \u25BC';
-                    toggle.appendChild(icon);
-                    var content = document.createElement('div');
-                    content.className = 'product-description-dropdown__content';
-                    desc.parentNode.insertBefore(wrap, desc);
-                    wrap.appendChild(toggle);
-                    wrap.appendChild(content);
-                    content.appendChild(desc);
-                    toggle.addEventListener('click', function () {
-                      var open = wrap.classList.toggle('is-open');
-                      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                      icon.textContent = open ? ' \u25B2' : ' \u25BC';
-                    });
-                  }
-                  setTimeout(makeDescriptionDropdown, 600);
-                  
-                  // Also run cleanup multiple times to catch content that loads later
-                  setTimeout(function() {
-                    var root = document.getElementById('product-component-1769123841686');
-                    if (root) {
-                      var desc = root.querySelector('.shopify-buy__product__description') ||
-                        root.querySelector('[class*="description"]') ||
-                        root.querySelector('.shopify-buy__product p');
-                      if (desc) {
-                        cleanDescriptionText(desc);
-                      }
-                    }
-                  }, 1000);
-                  
-                  setTimeout(function() {
-                    var root = document.getElementById('product-component-1769124723372');
-                    if (root) {
-                      var desc = root.querySelector('.shopify-buy__product__description') ||
-                        root.querySelector('[class*="description"]') ||
-                        root.querySelector('.shopify-buy__product p');
-                      if (desc) {
-                        cleanDescriptionText(desc);
-                      }
-                    }
-                  }, 2000);
-                });
-              }
-            })();
-            /*]]>*/
-            </script>
-            <div id='product-component-1769378458070' style="margin-top: 60px;"></div>
-            <script type="text/javascript">
-            /*<![CDATA[*/
-            (function () {
-              var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
-              if (window.ShopifyBuy) {
-                if (window.ShopifyBuy.UI) {
-                  ShopifyBuyInit();
-                } else {
-                  loadScript();
-                }
-              } else {
-                loadScript();
-              }
-              function loadScript() {
-                var script = document.createElement('script');
-                script.async = true;
-                script.src = scriptURL;
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-                script.onload = ShopifyBuyInit;
-              }
-              function ShopifyBuyInit() {
-                var client = ShopifyBuy.buildClient({
-                  domain: 'jsigku-13.myshopify.com',
-                  storefrontAccessToken: '9c1c187a862233d1048a7b0d5e4cc61e',
-                });
-                ShopifyBuy.UI.onReady(client).then(function (ui) {
-                  ui.createComponent('product', {
-                    id: '15408228204913',
-                    node: document.getElementById('product-component-1769378458070'),
-                    moneyFormat: '%24%7B%7Bamount%7D%7D',
-                    options: {
-  "product": {
-    "styles": {
-      "product": {
-        "@media (min-width: 601px)": {
-          "max-width": "100%",
-          "margin-left": "0",
-          "margin-bottom": "50px"
-        },
-        "text-align": "left",
-        "border": "2px solid #9e57b6",
-        "border-radius": "0px",
-        "padding": "20px"
-      },
-      "title": {
-        "font-size": "26px"
-      },
-      "button": {
-        "font-family": "Lato, sans-serif",
-        "font-weight": "bold",
-        ":hover": {
-          "background-color": "#8e4ea4"
-        },
-        "background-color": "#9e57b6",
-        ":focus": {
-          "background-color": "#8e4ea4"
-        }
-      },
-      "price": {
-        "font-size": "18px"
-      },
-      "compareAt": {
-        "font-size": "15.299999999999999px"
-      },
-      "unitPrice": {
-        "font-size": "15.299999999999999px"
-      }
-    },
-    "buttonDestination": "checkout",
-    "layout": "horizontal",
-    "contents": {
-      "img": false,
-      "imgWithCarousel": true,
-      "description": true
-    },
-    "width": "100%",
-    "text": {
-      "button": "Buy now"
-    },
-    "googleFonts": [
-      "Lato"
-    ]
-  },
-  "productSet": {
-    "styles": {
-      "products": {
-        "@media (min-width: 601px)": {
-          "margin-left": "-20px"
-        }
-      }
-    }
-  },
-  "modalProduct": {
-    "contents": {
-      "img": false,
-      "imgWithCarousel": true,
-      "button": false,
-      "buttonWithQuantity": true
-    },
-    "styles": {
-      "product": {
-        "@media (min-width: 601px)": {
-          "max-width": "100%",
-          "margin-left": "0px",
-          "margin-bottom": "0px"
-        }
-      },
-      "button": {
-        "font-family": "Lato, sans-serif",
-        "font-weight": "bold",
-        ":hover": {
-          "background-color": "#8e4ea4"
-        },
-        "background-color": "#9e57b6",
-        ":focus": {
-          "background-color": "#8e4ea4"
-        }
-      },
-      "title": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "bold",
-        "font-size": "26px",
-        "color": "#4c4c4c"
-      },
-      "price": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "18px",
-        "color": "#4c4c4c"
-      },
-      "compareAt": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "15.299999999999999px",
-        "color": "#4c4c4c"
-      },
-      "unitPrice": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "15.299999999999999px",
-        "color": "#4c4c4c"
-      }
-    },
-    "googleFonts": [
-      "Lato"
-    ],
-    "text": {
-      "button": "Add to cart"
-    }
-  },
-  "option": {},
-  "cart": {
-    "styles": {
-      "button": {
-        "font-family": "Lato, sans-serif",
-        "font-weight": "bold",
-        ":hover": {
-          "background-color": "#8e4ea4"
-        },
-        "background-color": "#9e57b6",
-        ":focus": {
-          "background-color": "#8e4ea4"
-        }
-      }
-    },
-    "text": {
-      "total": "Subtotal",
-      "button": "Checkout"
-    },
-    "googleFonts": [
-      "Lato"
-    ]
-  },
-  "toggle": {
-    "styles": {
-      "toggle": {
-        "font-family": "Lato, sans-serif",
-        "font-weight": "bold",
-        "background-color": "#9e57b6",
-        ":hover": {
-          "background-color": "#8e4ea4"
-        },
-        ":focus": {
-          "background-color": "#8e4ea4"
-        }
-      }
-    },
-    "googleFonts": [
-      "Lato"
-    ]
-  }
-},
-                  });
-                });
-              }
-            })();
-            /*]]>*/
-            </script>
-        </div>
-    </section>
-
-    <!-- Amazon Affiliate Products Section -->
+    <!-- Featured Products -->
     <section class="product-section amazon-section">
         <div class="container">
             <h2 class="section-title">Featured Products</h2>
-            <div class="product-grid" id="amazon-products-grid">
-                <!-- Amazon affiliate products will be dynamically loaded here -->
-            </div>
+            <div class="product-grid" id="amazon-products-grid"></div>
         </div>
     </section>
 
-    <!-- Newsletter Section -->
+    <!-- Our Products -->
+    <section class="product-section our-products-section">
+        <div class="container">
+            <h2 class="section-title">Our Products</h2>
+            <div class="product-grid" id="our-products-grid"></div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
     <section class="newsletter-section">
         <div class="container">
             <div class="newsletter-content">
@@ -674,9 +121,8 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <!-- Social Links -->
             <div class="footer-social">
-                <a href="https://www.instagram.com/ftrmarket?igsh=MTZnY3Rxam53bzI4bA%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" class="social-link">
+                <a href="https://www.instagram.com/futuremarketltd/" target="_blank" rel="noopener noreferrer" class="social-link">
                     <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                     </svg>
@@ -688,11 +134,10 @@
                 </a>
             </div>
 
-            <!-- Copyright and Links -->
             <div class="footer-copyright">
                 <div class="footer-copyright-text">© 2025, Future Market</div>
                 <div class="footer-links">
-                    <a href="#">Refund policy</a>
+                    <a href="refund-policy.html">Refund policy</a>
                     <a href="#">Privacy policy</a>
                     <a href="#">Terms of service</a>
                 </div>
@@ -700,10 +145,24 @@
         </div>
     </footer>
 
+    <!-- Search Modal -->
+    <div id="search-modal" class="search-modal">
+        <div class="search-modal-content">
+            <button class="search-close-btn" id="search-close" type="button" aria-label="Close search">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="search-input-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-input" class="search-input" placeholder="Search products..." autocomplete="off" />
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </div>
+
     <!-- Promotional Modal -->
     <div id="promo-modal" class="promo-modal">
         <div class="promo-content">
-            <button class="close-promo" onclick="closePromoModal()">
+            <button class="close-promo" onclick="closePromoModal()" type="button" aria-label="Close">
                 <i class="fas fa-times"></i>
             </button>
 
@@ -716,37 +175,34 @@
                 <input type="tel" placeholder="What is your phone number?" class="promo-input" />
 
                 <p class="promo-disclaimer">
-                    *By providing your number and clicking the button, you agree to receive recurring auto-dialed marketing SMS (including cart reminders; AI content; artificial or prerecorded voices) and our{" "}
-                    <a href="#" class="promo-link">TERMS OF SERVICE</a>{" "}
-                    (including arbitration); you don't need to provide this as a condition of any purchase; message and data rates may apply. Msg frequency varies. Reply HELP for help; STOP to opt-out. View{" "}
+                    *By providing your number and clicking the button, you agree to receive recurring auto-dialed marketing SMS (including cart reminders; AI content; artificial or prerecorded voices) and our
+                    <a href="#" class="promo-link">TERMS OF SERVICE</a>
+                    (including arbitration); you don't need to provide this as a condition of any purchase; message and data rates may apply. Msg frequency varies. Reply HELP for help; STOP to opt-out. View
                     <a href="#" class="promo-link">PRIVACY POLICY</a>.
                 </p>
 
-                <button class="promo-signup-btn">
+                <button class="promo-signup-btn" type="button">
                     <div class="signup-text">
                         <span>Sign up now</span>
                         <span class="signup-subtext">to subscribe to texts</span>
                     </div>
                 </button>
 
-                <button class="promo-no-thanks" onclick="closePromoModal()">
+                <button class="promo-no-thanks" onclick="closePromoModal()" type="button">
                     No Thanks
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Shopify Buy Button SDK -->
     <script>
-        // Clear localStorage BEFORE SDK loads to prevent it from using cached credentials
         try {
             localStorage.removeItem('shopify_store');
             localStorage.removeItem('shopify_api_key');
             localStorage.removeItem('shopify_enabled');
-            console.log('🧹 Cleared localStorage before SDK load');
         } catch(e) {}
     </script>
     <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
-    <script src="./script.js?v=3"></script>
+    <script src="./script.js?v=4"></script>
 </body>
 </html>

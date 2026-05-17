@@ -20,17 +20,82 @@
 // Amazon Affiliate Products Data
 // Add your products here - this is where you'll manage all your affiliate links
 const amazonProducts = [
-    // Your first Amazon affiliate product
     {
-        id: 'product-1',
-        name: 'Heated Blanket',
+        id: 'product-aula-s75-pro',
+        name: 'AULA S75 PRO',
         price: 0,
-        image: './images/Gemini_Generated_Image_lk9naalk9naalk9n.png',
-        image2: './images/Gemini_Generated_Image_lk9naalk9naalk9n.png',
-        affiliateLink: 'https://amzn.to/4sKu8B6',
-        category: 'home'
+        image: './images/aula-s75-pro.png',
+        image2: './images/aula-s75-pro.png',
+        affiliateLink: 'https://amzn.to/4tE7N7m',
+        category: 'featured'
+    },
+    {
+        id: 'product-yunzii-wood68',
+        name: 'YUNZII WOOD68',
+        price: 0,
+        image: './images/yunzii-wood68.png',
+        image2: './images/yunzii-wood68.png',
+        affiliateLink: 'https://amzn.to/4uTMZKg',
+        category: 'featured'
+    },
+    {
+        id: 'product-keychron-v5-max',
+        name: 'Keychron V5 Max',
+        price: 0,
+        image: './images/keychron-v5-max.png',
+        image2: './images/keychron-v5-max.png',
+        affiliateLink: 'https://amzn.to/42IYcRR',
+        category: 'featured'
+    },
+    {
+        id: 'product-razer-huntsman-v3',
+        name: 'Razer Huntsman V3',
+        price: 0,
+        image: './images/razer-huntsman-v3.jpg',
+        image2: './images/razer-huntsman-v3.jpg',
+        affiliateLink: 'https://amzn.to/4ugiX3k',
+        category: 'featured'
+    },
+    {
+        id: 'product-rainy-75',
+        name: 'Rainy 75',
+        price: 0,
+        image: './images/rainy-75.jpg',
+        image2: './images/rainy-75.jpg',
+        affiliateLink: 'https://amzn.to/4dwolbA',
+        category: 'featured'
     }
-    // Add more products here by copying the object above and updating the details
+];
+
+// Our Products – same card build as Featured; each opens its own product page
+const ourProducts = [
+    {
+        id: 'our-shopify-1',
+        name: 'Stand Charger',
+        price: 0,
+        image: 'images/stand-charger.png',
+        image2: 'images/stand-charger.png',
+        type: 'shopify',
+        url: 'product-1.html'
+    },
+    {
+        id: 'our-shopify-2',
+        name: 'Steam Cleaner',
+        price: 0,
+        image: 'images/steam-cleaner.png',
+        image2: 'images/steam-cleaner.png',
+        type: 'shopify',
+        url: 'product-2.html'
+    },
+    {
+        id: 'our-invoice-gen',
+        name: 'Invoice Generator',
+        price: 6.99,
+        image: 'images/invoice-generator.jpg',
+        image2: 'images/invoice-generator.jpg',
+        type: 'digital',
+        url: 'invoice-generator/index.html'
+    }
 ];
 
 // ============================================
@@ -70,25 +135,51 @@ let shopifyBuyUI = null;
 let products = [];
 let collections = [];
 
-// Mobile Navigation Toggle
+// Mobile Navigation Toggle - Dropdown Menu
 const mobileMenu = document.getElementById('mobile-menu');
-const navMenu = document.querySelector('.nav-center');
+const mobileDropdown = document.getElementById('mobile-dropdown');
 
-if (mobileMenu && navMenu) {
-    mobileMenu.addEventListener('click', () => {
+function closeMobileDropdown() {
+    if (mobileDropdown && mobileMenu) {
+        mobileDropdown.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        const menuIcon = mobileMenu.querySelector('i');
+        if (menuIcon) {
+            menuIcon.classList.remove('fa-times');
+            menuIcon.classList.add('fa-bars');
+        }
+    }
+}
+
+if (mobileMenu && mobileDropdown) {
+    mobileMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isActive = mobileDropdown.classList.toggle('active');
         mobileMenu.classList.toggle('active');
-        navMenu.classList.toggle('active');
+        const menuIcon = mobileMenu.querySelector('i');
+        if (menuIcon) {
+            if (isActive) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        }
     });
 }
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        if (mobileMenu && navMenu) {
-            mobileMenu.classList.remove('active');
-            navMenu.classList.remove('active');
+document.querySelectorAll('.dropdown-link').forEach(link => {
+    link.addEventListener('click', () => closeMobileDropdown());
+});
+
+document.addEventListener('click', (e) => {
+    if (mobileDropdown && mobileMenu) {
+        const isClickInside = mobileMenu.contains(e.target) || mobileDropdown.contains(e.target);
+        if (!isClickInside && mobileDropdown.classList.contains('active')) {
+            closeMobileDropdown();
         }
-    });
+    }
 });
 
 // Smooth scrolling for navigation links
@@ -863,6 +954,161 @@ function searchProducts(query) {
     );
 }
 
+// ============================================
+// SEARCH FUNCTIONALITY
+// ============================================
+
+function searchAllProducts(query) {
+    if (!query || query.trim() === '') {
+        return [];
+    }
+
+    const searchTerm = query.toLowerCase().trim();
+    const results = [];
+
+    amazonProducts.forEach(product => {
+        const productName = product.name.toLowerCase();
+        if (productName.includes(searchTerm)) {
+            const matchIndex = productName.indexOf(searchTerm);
+            const similarity = matchIndex === 0 ? 100 : 100 - matchIndex;
+            results.push({ ...product, type: 'amazon', similarity });
+        }
+    });
+
+    ourProducts.forEach(product => {
+        const productName = product.name.toLowerCase();
+        if (productName.includes(searchTerm)) {
+            const matchIndex = productName.indexOf(searchTerm);
+            const similarity = matchIndex === 0 ? 100 : 100 - matchIndex;
+            results.push({ ...product, type: 'store', similarity });
+        }
+    });
+
+    products.forEach(product => {
+        const productName = product.name.toLowerCase();
+        if (productName.includes(searchTerm)) {
+            const matchIndex = productName.indexOf(searchTerm);
+            const similarity = matchIndex === 0 ? 100 : 100 - matchIndex;
+            results.push({ ...product, type: 'shopify', similarity });
+        }
+    });
+
+    return results.sort((a, b) => b.similarity - a.similarity);
+}
+
+function displaySearchResults(query) {
+    const resultsContainer = document.getElementById('search-results');
+    if (!resultsContainer) return;
+
+    const searchResults = searchAllProducts(query);
+
+    if (query.trim() === '') {
+        resultsContainer.innerHTML = '';
+        resultsContainer.classList.remove('empty');
+        return;
+    }
+
+    if (searchResults.length === 0) {
+        resultsContainer.innerHTML = '<div class="search-results empty">No products found</div>';
+        resultsContainer.classList.add('empty');
+        return;
+    }
+
+    resultsContainer.classList.remove('empty');
+    resultsContainer.innerHTML = searchResults.map(product => {
+        const isAmazon = product.type === 'amazon';
+        const isStore = product.type === 'store';
+        const productLink = isAmazon ? product.affiliateLink : (isStore ? product.url : '#');
+        const productImage = product.image || 'https://via.placeholder.com/200x200';
+        const productPrice = product.price > 0 ? `$${product.price.toFixed(2)}` : '';
+        const productType = isAmazon ? 'Featured' : 'Our Products';
+
+        return `
+            <a href="${productLink}" ${isAmazon ? 'target="_blank" rel="nofollow sponsored"' : ''} class="search-result-item">
+                <img src="${productImage}" alt="${product.name}" class="search-result-image" />
+                <div class="search-result-info">
+                    <div class="search-result-name">${product.name}</div>
+                    ${productPrice ? `<div class="search-result-price">${productPrice} USD</div>` : ''}
+                    <div class="search-result-type">${productType}</div>
+                </div>
+            </a>
+        `;
+    }).join('');
+}
+
+function openSearchModal() {
+    const searchModal = document.getElementById('search-modal');
+    const searchInput = document.getElementById('search-input');
+
+    if (searchModal) {
+        searchModal.classList.add('active');
+        setTimeout(() => {
+            if (searchInput) searchInput.focus();
+        }, 100);
+    }
+}
+
+function closeSearchModal() {
+    const searchModal = document.getElementById('search-modal');
+    const searchInput = document.getElementById('search-input');
+
+    if (searchModal) searchModal.classList.remove('active');
+    if (searchInput) searchInput.value = '';
+
+    const resultsContainer = document.getElementById('search-results');
+    if (resultsContainer) {
+        resultsContainer.innerHTML = '';
+        resultsContainer.classList.remove('empty');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const searchBtn = document.querySelector('.search-btn');
+    const searchModal = document.getElementById('search-modal');
+    const searchCloseBtn = document.getElementById('search-close');
+    const searchInput = document.getElementById('search-input');
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSearchModal();
+        });
+    }
+
+    if (searchCloseBtn) {
+        searchCloseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeSearchModal();
+        });
+    }
+
+    if (searchModal) {
+        searchModal.addEventListener('click', (e) => {
+            if (e.target === searchModal) closeSearchModal();
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && searchModal && searchModal.classList.contains('active')) {
+            closeSearchModal();
+        }
+    });
+
+    if (searchInput) {
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => displaySearchResults(e.target.value), 150);
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                displaySearchResults(searchInput.value.trim());
+            }
+        });
+    }
+});
 
 // Shopify API Integration - Fetch products from collections
 async function fetchProductsFromShopify() {
@@ -1194,7 +1440,7 @@ function renderAmazonProducts() {
         return;
     }
 
-    productGrid.innerHTML = amazonProducts.map((product) => {
+    productGrid.innerHTML = [...amazonProducts].reverse().map((product) => {
         const isOnSale = product.originalPrice && product.originalPrice > product.price;
         const image2 = product.image2 || product.image;
         const showPrice = product.price > 0;
@@ -1225,9 +1471,37 @@ function renderAmazonProducts() {
     console.log(`✅ Rendered ${amazonProducts.length} Amazon affiliate products`);
 }
 
+// Render Our Products (same card build as Featured; each card links to its product page)
+function renderOurProducts() {
+    const grid = document.getElementById('our-products-grid');
+    if (!grid) return;
+
+    grid.innerHTML = ourProducts.map((product) => {
+        const showPrice = product.price > 0;
+        const badgeText = product.type === 'digital' ? 'View product' : 'Buy now';
+
+        return `
+            <div class="product-card amazon-product-card" data-product-id="${product.id}" data-type="${product.type}">
+                <a href="${product.url}" class="product-link">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" />
+                        <img src="${product.image2 || product.image}" alt="${product.name}" />
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        ${showPrice ? `<div class="product-price-container"><span class="product-price-usd">$${product.price.toFixed(2)} USD</span></div>` : ''}
+                        <div class="amazon-badge">${badgeText}</div>
+                    </div>
+                </a>
+            </div>
+        `;
+    }).join('');
+}
+
 // Initialize Amazon products on page load
 function initializeAmazonProducts() {
     renderAmazonProducts();
+    renderOurProducts();
 }
 
 // Render Shopify products to the shopify section

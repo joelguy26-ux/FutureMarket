@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator | Future Market</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../images/logo.png" type="image/png">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Hide main nav (Shop, Reviews, etc.) on invoice generator */
+        .main-nav { display: none !important; }
+        /* Invoice landing & form – scoped so they don't conflict with main styles */
+        .invoice-landing { padding-top: 0; min-height: 100vh; }
+        .invoice-hero { text-align: center; padding: 80px 20px 60px; background: linear-gradient(135deg, #f8fafc 0%, #fff 100%); }
+        .invoice-hero h1 { font-family: 'Quantico', sans-serif; font-size: 2rem; margin-bottom: 16px; }
+        .invoice-hero p { font-size: 1.1rem; color: #64748b; max-width: 500px; margin: 0 auto 32px; line-height: 1.6; }
+        .invoice-subtitle { margin-top: 16px; font-size: 0.9rem; color: #94a3b8; }
+        .invoice-examples { max-width: 900px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .invoice-example-card {
+            background: rgba(255,255,255,0.6); backdrop-filter: blur(10px);
+            border: 1px solid var(--border-purple); border-radius: 2px;
+            padding: 24px; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 0 12px var(--neon-glow-purple), inset 0 0 12px rgba(147,51,234,0.04);
+        }
+        .invoice-example-card:hover {
+            border-color: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-glow-cyan);
+            transform: translateY(-4px);
+        }
+        .invoice-example-card h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--neon-purple); }
+        .invoice-example-card p { font-size: 0.9rem; color: #64748b; }
+        .invoice-trust { text-align: center; padding: 60px 20px; background: #f8fafc; }
+        .invoice-trust h2 { font-family: 'Quantico', sans-serif; font-size: 1.5rem; margin-bottom: 32px; }
+        .invoice-trust-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+        .invoice-stat { text-align: center; }
+        .invoice-stat strong { display: block; font-size: 1.5rem; color: var(--neon-purple); }
+        .invoice-stat span { font-size: 0.9rem; color: #64748b; }
+        /* Form page */
+        .form-page { display: none; padding-top: 24px; padding-bottom: 40px; }
+        .form-page.active { display: block; }
+        .form-wrapper { max-width: 1000px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 700px) { .form-wrapper { grid-template-columns: 1fr; } }
+        .form-panel { background: white; border-radius: 8px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+        .form-panel h1 { font-size: 1.25rem; margin-bottom: 20px; color: #333; }
+        .form-panel label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; color: #555; }
+        .form-panel input { width: 100%; padding: 10px; margin-bottom: 16px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; }
+        .form-group { margin-bottom: 16px; }
+        .preview-invoice { font-size: 14px; color: #333; }
+        .preview-invoice h2 { font-size: 1.5rem; margin-bottom: 20px; color: #444; }
+        .preview-invoice .row { margin-bottom: 12px; }
+        .preview-invoice .total { font-size: 1.2rem; font-weight: 700; margin-top: 20px; padding-top: 12px; border-top: 2px solid #333; }
+        .btn-back { margin-bottom: 20px; background: none; border: none; color: var(--neon-purple); cursor: pointer; font-size: 0.9rem; padding: 0; }
+        .btn-back:hover { text-decoration: underline; }
+        .btn-download { position: fixed; bottom: 24px; right: 24px; background: linear-gradient(135deg, #9333ea 0%, #3b82f6 100%); color: white; border: 1px solid var(--neon-cyan); padding: 12px 24px; border-radius: 2px; font-weight: 700; cursor: pointer; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-download:hover { opacity: 0.9; }
+        /* Hidden element for PDF capture – off-screen, no overflow/height constraints */
+        #pdf-source {
+            position: fixed; left: -99999px; top: 0;
+            width: 210mm; max-width: 210mm;
+            overflow: visible; height: auto; min-height: 0;
+            background: white; padding: 20mm;
+            font-size: 14px; color: #333;
+            font-family: inherit;
+        }
+        #pdf-source h2 { font-size: 1.5rem; margin-bottom: 20px; color: #444; }
+        #pdf-source .row { margin-bottom: 12px; }
+        #pdf-source .total { font-size: 1.2rem; font-weight: 700; margin-top: 20px; padding-top: 12px; border-top: 2px solid #333; }
+        @media print {
+            @page { size: A4; margin: 20mm; }
+            body * { visibility: hidden; }
+            #formPage, #formPage * { visibility: visible; }
+            #formPage { position: absolute; left: 0; top: 0; width: 100%; }
+            .form-wrapper { display: block !important; }
+            .form-panel:first-child { display: none !important; }
+            .form-panel h1 { display: none !important; }
+            .btn-back, .btn-download { display: none !important; }
+            .promo-banner, .header, .main-nav, #landingPage { display: none !important; }
+            #preview { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Promo Banner – same as Future Market -->
+    <div class="promo-banner">
+        <div class="container">
+            <div class="promo-banner-content">
+                <span class="promo-text">50% OFF STORE WIDE!</span>
+                <button class="promo-shop-btn" onclick="window.location.href='../index.html'">Shop Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header – same structure as Future Market -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-main">
+                <div class="header-dropdown-wrap">
+                    <button class="mobile-menu-btn" id="mobile-menu" type="button" aria-expanded="false" aria-controls="header-dropdown" onclick="toggleDropdown()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="header-dropdown" id="header-dropdown" aria-hidden="true">
+                        <a href="../index.html" class="header-dropdown-item">Shop</a>
+                        <a href="../index.html" class="header-dropdown-item">Reviews</a>
+                        <a href="../index.html" class="header-dropdown-item">Track Your Order</a>
+                        <a href="../index.html" class="header-dropdown-item">Follow</a>
+                        <a href="../refund-policy.html" class="header-dropdown-item">Refund Policy</a>
+                        <a href="../shipping-policy.html" class="header-dropdown-item">Shipping Policy</a>
+                        <a href="../index.html" class="header-dropdown-item">Size Chart</a>
+                        <a href="index.html" class="header-dropdown-item header-dropdown-item--paid">Invoice Generator <span class="header-dropdown-badge">Paid</span></a>
+                    </div>
+                </div>
+                <div class="logo-center">
+                    <a href="../index.html" class="logo-circle">
+                        <img src="../images/logo.png" alt="Future Market Logo" class="logo-image">
+                    </a>
+                </div>
+                <div class="nav-right">
+                    <button class="nav-icon" aria-label="Shopping cart" onclick="window.location.href='../index.html'">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Nav – same as Future Market -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="nav-links">
+                <a href="../index.html" class="nav-button">Shop</a>
+                <a href="../index.html" class="nav-button">Reviews</a>
+                <a href="../index.html" class="nav-button">Track Your Order</a>
+                <a href="../index.html" class="nav-button">Follow</a>
+                <a href="../refund-policy.html" class="nav-button">Refund Policy</a>
+                <a href="../shipping-policy.html" class="nav-button">Shipping Policy</a>
+                <a href="../index.html" class="nav-button">Size Chart</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Landing Page -->
+    <section id="landingPage" class="invoice-landing">
+        <div class="invoice-hero">
+            <h1>Professional Invoice Generator</h1>
+            <p>The fastest, easiest way to create PDF invoices for your business.</p>
+            <button class="promo-shop-btn" onclick="showForm()">Start Creating Invoices</button>
+            <p class="invoice-subtitle">Starting at $6.99/month • Instant Download</p>
+        </div>
+
+        <div class="invoice-examples">
+            <div class="invoice-example-card" onclick="showForm()">
+                <h3>Professional Services</h3>
+                <p>Clean design for consulting and professional services</p>
+            </div>
+            <div class="invoice-example-card" onclick="showForm()">
+                <h3>Creative Projects</h3>
+                <p>Ideal for designers, agencies, and creatives</p>
+            </div>
+            <div class="invoice-example-card" onclick="showForm()">
+                <h3>Technical Services</h3>
+                <p>Perfect for developers and IT consultants</p>
+            </div>
+        </div>
+
+        <div class="invoice-trust">
+            <h2>Trusted by Professionals</h2>
+            <div class="invoice-trust-stats">
+                <div class="invoice-stat"><strong>10K+</strong><span>Invoices Generated</span></div>
+                <div class="invoice-stat"><strong>$6.99</strong><span>Starting Price</span></div>
+                <div class="invoice-stat"><strong>30 sec</strong><span>Average Time</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Page -->
+    <section id="formPage" class="form-page">
+        <div class="form-wrapper">
+            <div class="form-panel">
+                <button class="btn-back" onclick="showLanding()">← Back to landing</button>
+                <h1>Invoice Form</h1>
+                <form id="invoiceForm">
+                    <div class="form-group">
+                        <label>Your Business Name</label>
+                        <input type="text" name="business_name" placeholder="Acme Inc.">
+                    </div>
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" name="client_name" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" name="description" placeholder="Web development services">
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" name="quantity" min="0" step="0.5" value="1" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Rate ($)</label>
+                        <input type="number" name="rate" min="0" step="0.01" value="0" placeholder="100">
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-panel">
+                <h1>Preview</h1>
+                <div id="preview" class="preview-invoice">
+                    <h2>INVOICE</h2>
+                    <div class="row"><strong>From:</strong> <span id="previewBusiness">—</span></div>
+                    <div class="row"><strong>To:</strong> <span id="previewClient">—</span></div>
+                    <div class="row"><strong>Description:</strong> <span id="previewDesc">—</span></div>
+                    <div class="row"><strong>Quantity:</strong> <span id="previewQty">—</span> × <strong>Rate:</strong> $<span id="previewRate">—</span></div>
+                    <div class="row total">Total: $<span id="previewTotal">0.00</span></div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn-download" onclick="downloadPDF()">Download PDF</button>
+    </section>
+
+    <script>
+        function toggleDropdown() {
+            const wrap = document.querySelector('.header-dropdown-wrap');
+            if (wrap) wrap.classList.toggle('is-open');
+        }
+        document.addEventListener('click', function(e) {
+            const wrap = document.querySelector('.header-dropdown-wrap');
+            if (wrap && !wrap.contains(e.target)) wrap.classList.remove('is-open');
+        });
+
+        function showForm() {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('formPage').classList.add('active');
+        }
+
+        function showLanding() {
+            document.getElementById('landingPage').style.display = 'block';
+            document.getElementById('formPage').classList.remove('active');
+        }
+
+        const form = document.getElementById('invoiceForm');
+
+        function updatePreview() {
+            const data = new FormData(form);
+            const business = data.get('business_name') || '—';
+            const client = data.get('client_name') || '—';
+            const desc = data.get('description') || '—';
+            const qty = parseFloat(data.get('quantity')) || 0;
+            const rate = parseFloat(data.get('rate')) || 0;
+            const total = (qty * rate).toFixed(2);
+
+            const preBusiness = document.getElementById('previewBusiness');
+            const preClient = document.getElementById('previewClient');
+            const preDesc = document.getElementById('previewDesc');
+            const preQty = document.getElementById('previewQty');
+            const preRate = document.getElementById('previewRate');
+            const preTotal = document.getElementById('previewTotal');
+
+            if (preBusiness) preBusiness.textContent = business;
+            if (preClient) preClient.textContent = client;
+            if (preDesc) preDesc.textContent = desc;
+            if (preQty) preQty.textContent = qty;
+            if (preRate) preRate.textContent = rate.toFixed(2);
+            if (preTotal) preTotal.textContent = total;
+        }
+
+        form.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+
+        updatePreview();
+
+        function downloadPDF() {
+            const data = new FormData(form);
+            const business = data.get('business_name') || '—';
+            const client = data.get('client_name') || '—';
+            const desc = data.get('description') || '—';
+            const qty = parseFloat(data.get('quantity')) || 0;
+            const rate = parseFloat(data.get('rate')) || 0;
+            const total = (qty * rate).toFixed(2);
+
+            const source = document.createElement('div');
+            source.id = 'pdf-source';
+            source.innerHTML = '<h2>INVOICE</h2>' +
+                '<div class="row"><strong>From:</strong> ' + escapeHtml(business) + '</div>' +
+                '<div class="row"><strong>To:</strong> ' + escapeHtml(client) + '</div>' +
+                '<div class="row"><strong>Description:</strong> ' + escapeHtml(desc) + '</div>' +
+                '<div class="row"><strong>Quantity:</strong> ' + qty + ' × <strong>Rate:</strong> $' + rate.toFixed(2) + '</div>' +
+                '<div class="row total">Total: $' + total + '</div>';
+
+            document.body.appendChild(source);
+
+            const opt = {
+                margin: 15,
+                filename: 'invoice.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(source).save().then(cleanup).catch(cleanup);
+            function cleanup() { source.remove(); }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
